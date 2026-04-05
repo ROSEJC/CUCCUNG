@@ -64,15 +64,15 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
             </Link>
 
             {/* Explore Dropdown */}
-            {categories.length > 0 && (
-              <div className="relative group">
-                <button className="flex items-center space-x-1.5 text-sm font-bold text-slate-600 group-hover:text-primary transition-all outline-none">
-                  <span>Cẩm nang</span>
-                  <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform duration-300" />
-                </button>
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 bg-white/95 backdrop-blur-xl rounded-[1.5rem] shadow-2xl shadow-slate-200/60 border border-slate-50 p-2.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <div className="grid grid-cols-1 gap-1">
-                    {categories.map((cat) => (
+            <div className="relative group">
+              <button className="flex items-center space-x-1.5 text-sm font-bold text-slate-600 group-hover:text-primary transition-all outline-none">
+                <span>Cẩm nang</span>
+                <ChevronDown className="w-4 h-4 group-hover:rotate-180 transition-transform duration-300" />
+              </button>
+              <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 bg-white/95 backdrop-blur-xl rounded-[1.5rem] shadow-2xl shadow-slate-200/60 border border-slate-50 p-2.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <div className="grid grid-cols-1 gap-1">
+                  {categories.length > 0 ? (
+                    categories.map((cat) => (
                       <Link
                         key={cat.slug}
                         href={`/${cat.slug}`}
@@ -81,11 +81,13 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
                         <div className="w-1.5 h-1.5 rounded-full bg-slate-200 group-hover/item:bg-primary mr-3 transition-colors" />
                         <span className="truncate">{cat.name}</span>
                       </Link>
-                    ))}
-                  </div>
+                    ))
+                  ) : (
+                    <div className="px-4 py-3 text-sm text-slate-400 italic">Đang cập nhật danh mục...</div>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </nav>
 
           {/* Right CTA */}
@@ -174,18 +176,22 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
 
 
             <div className="space-y-4">
-              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Danh mục</h3>
+              <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-2">Cẩm nang</h3>
               <div className="grid grid-cols-1 gap-1">
-                {categories.map((cat) => (
-                  <Link
-                    key={cat.slug}
-                    href={`/${cat.slug}`}
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block px-4 py-3 text-lg font-bold text-slate-600 hover:bg-emerald-50 hover:text-primary rounded-2xl transition-all"
-                  >
-                    {cat.name}
-                  </Link>
-                ))}
+                {categories.length > 0 ? (
+                  categories.map((cat) => (
+                    <Link
+                      key={cat.slug}
+                      href={`/${cat.slug}`}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="block px-4 py-3 text-lg font-bold text-slate-600 hover:bg-emerald-50 hover:text-primary rounded-2xl transition-all"
+                    >
+                      {cat.name}
+                    </Link>
+                  ))
+                ) : (
+                  <div className="px-4 py-3 text-sm text-slate-400 italic">Đang cập nhật...</div>
+                )}
               </div>
             </div>
 

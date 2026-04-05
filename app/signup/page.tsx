@@ -34,7 +34,7 @@ function SignupForm() {
       if (result.error) {
         toast.error(result.error)
       } else {
-        toast.success(result.success || "Đăng ký thành công!")
+        toast.success(result.success || "Đăng ký thành công! Xin vui lòng đăng nhập lại")
         router.push("/login")
       }
     } catch (err) {
