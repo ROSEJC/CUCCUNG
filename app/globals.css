@@ -1,4 +1,6 @@
 @import "tailwindcss";
+/* Import plugin Typography cho v4 */
+@plugin "@tailwindcss/typography";
 
 :root {
   --background: #ffffff;

@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id       String  @id @default(uuid())
+  email    String  @unique
+  password String
+  name     String?
+  role     Role    @default(USER)
+  
+  // E-E-A-T fields (Expertise, Authoritativeness, Trustworthiness)
+  bio      String? @db.Text
+  avatar   String?
+
+  posts    Post[]
+  comments Comment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id             String  @id @default(uuid())
+  name           String
+  slug           String  @unique
+  description    String? @db.Text
+  seoTitle       String?
+  seoDescription String?
+  posts          Post[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Tag {
+  id        String   @id @default(uuid())
+  name      String
+  slug      String   @unique
+  posts     Post[]   // Implicit many-to-many relation with Post
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id              String   @id @default(uuid())
+  title           String
+  slug            String   @unique
+  
+  // Content
+  content         String   @db.Text
+  excerpt         String?  @db.Text
+  readingTime     Int?     // thời gian đọc (phút)
+  
+  // SEO Metadata
+  metaTitle       String
+  metaDescription String
+  metaImage       String?
+  isIndexed       Boolean  @default(true)
+  canonicalUrl    String?
+
+  // Product Review System
+  reviewData      Json?    // lưu JSON, ví dụ: { rating: 4.8, pros: [], cons: [], affiliateLink: "..." }
+
+  // Status
+  published       Boolean  @default(false)
+  
+  // Relations
+  authorId        String
+  author          User     @relation(fields: [authorId], references: [id])
+  
+  categoryId      String?
+  category        Category? @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+
+  tags            Tag[]    // Implicit many-to-many relation with Tag
+  comments        Comment[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Comment {
+  id          String   @id @default(uuid())
+  content     String   @db.Text
+  authorName  String
+  authorEmail String
+
+  // Relation to Post
+  postId      String
+  post        Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  // Optional relation if the commenter is a registered user
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  isApproved  Boolean  @default(false)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
