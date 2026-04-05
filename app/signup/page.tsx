@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react" // 1. Thêm Suspense
 import { useRouter } from "next/navigation"
 import { clsx } from "clsx"
 import { Lock, Mail, Baby, ArrowRight, Eye, EyeOff, User } from "lucide-react"
@@ -8,7 +8,8 @@ import { toast } from "sonner"
 import Link from "next/link"
 import { registerUser } from "@/app/actions/register"
 
-export default function SignupPage() {
+// Tách logic Form ra Component riêng
+function SignupForm() {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -45,12 +46,10 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen h-svh flex items-center justify-center p-4 bg-[radial-gradient(circle_at_top_left,_#fff5f7_0%,_#f0f7ff_100%)] overflow-y-auto overflow-x-hidden scrollbar-hide font-sans">
-      {/* Background Decorative Elements */}
       <div className="absolute top-20 left-10 w-64 h-64 bg-pink-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
       <div className="absolute bottom-20 right-10 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
 
       <div className="relative w-full max-w-md py-8">
-        {/* Logo/Icon */}
         <div className="flex flex-col items-center mb-8 animate-fade-in-down">
           <div className="p-4 bg-white rounded-3xl shadow-xl shadow-pink-100/50 mb-4 transform hover:scale-110 transition-transform duration-300">
             <Baby className="w-12 h-12 text-pink-400" />
@@ -59,7 +58,6 @@ export default function SignupPage() {
           <p className="text-gray-500 mt-2">Dành cho cộng đồng Mẹ & Bé Cưng</p>
         </div>
 
-        {/* Signup Card */}
         <div className="bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl shadow-gray-200/50 border border-white animate-fade-in">
           <form onSubmit={handleSubmit} className="flex flex-col space-y-5">
             <div className="space-y-2">
@@ -115,11 +113,7 @@ export default function SignupPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-pink-400 transition-colors"
                 >
-                  {showPassword ? (
-                    <EyeOff className="w-5 h-5" />
-                  ) : (
-                    <Eye className="w-5 h-5" />
-                  )}
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
             </div>
@@ -170,11 +164,23 @@ export default function SignupPage() {
           </div>
         </div>
 
-        {/* Footer text */}
         <p className="mt-8 text-center text-gray-400 text-xs">
           &copy; 2026 Cuccung Website. All rights reserved.
         </p>
       </div>
     </div>
+  )
+}
+
+// Component chính export ra ngoài
+export default function SignupPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-blue-50">
+        <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <SignupForm />
+    </Suspense>
   )
 }
