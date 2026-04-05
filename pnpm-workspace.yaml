@@ -1,0 +1,8 @@
+allowBuilds:
+  '@prisma/engines': true
+  a: true
+  h: true
+  p: true
+  prisma: true
+  r: true
+  s: true

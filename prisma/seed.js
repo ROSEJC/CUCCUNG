@@ -36,6 +36,7 @@ async function main() {
           content: 'Testing if featuredImageAlt and images work.',
           metaTitle: 'Test',
           metaDescription: 'Test Description',
+          metaImage: '/test.png',
           featuredImageAlt: 'Test Alt',
           images: [{ id: '1', url: '/test.png', alt: 'Test', name: 'test.png' }],
           authorId: admin.id,

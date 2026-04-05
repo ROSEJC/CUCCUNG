@@ -1,6 +1,9 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import prisma from "@/lib/prisma";
+import Link from "next/link";
 import { FileText } from "lucide-react";
+import { format } from "date-fns";
 
 export default async function AdminPage() {
   const session = await auth();
@@ -9,6 +12,14 @@ export default async function AdminPage() {
     redirect("/login");
   }
 
+  // Fetch posts
+  const posts = await prisma.post.findMany({
+    where: { published: true },
+    include: { category: true },
+    orderBy: { createdAt: "desc" },
+    take: 5, // Limit to recent 5 posts
+  });
+
   return (
     <>
       <header className="flex justify-between items-center mb-10">
@@ -16,7 +27,7 @@ export default async function AdminPage() {
           <h1 className="text-2xl font-bold text-gray-800">Tổng quan hệ thống</h1>
           <p className="text-gray-500">Chào mừng trở lại, {session.user.name}!</p>
         </div>
-        
+
         <div className="flex items-center space-x-4">
           <div className="text-right">
             <p className="text-sm font-bold text-gray-800">{session.user.name}</p>
@@ -31,7 +42,7 @@ export default async function AdminPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
           <p className="text-gray-400 text-sm font-medium mb-1">Tổng bài viết</p>
-          <h3 className="text-3xl font-bold text-gray-800">128</h3>
+          <h3 className="text-3xl font-bold text-gray-800">{posts.length}</h3>
         </div>
         <div className="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
           <p className="text-gray-400 text-sm font-medium mb-1">Lượt xem trang</p>
@@ -50,10 +61,29 @@ export default async function AdminPage() {
             Tạo bài viết mới
           </a>
         </div>
-        <div className="flex flex-col items-center justify-center h-full pt-10 text-gray-300">
-          <FileText className="w-16 h-16 mb-4 opacity-20" />
-          <p>Chưa có dữ liệu bài viết mới</p>
-        </div>
+
+        {posts.length > 0 ? (
+          <ul className="space-y-4">
+            {posts.map((post) => (
+              <li key={post.id} className="border-b pb-4">
+                <Link href={`/${post.category?.slug}/${post.slug}`} className="block hover:underline">
+                  <h3 className="text-lg font-semibold text-emerald-700">{post.title}</h3>
+                </Link>
+                <p className="text-sm text-gray-500">
+                  {post.category?.name && (
+                    <span className="mr-2">Category: {post.category.name}</span>
+                  )}
+                  <span>Published: {format(new Date(post.createdAt), "MMMM dd, yyyy")}</span>
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full pt-10 text-gray-300">
+            <FileText className="w-16 h-16 mb-4 opacity-20" />
+            <p>Chưa có dữ liệu bài viết mới</p>
+          </div>
+        )}
       </div>
     </>
   );
