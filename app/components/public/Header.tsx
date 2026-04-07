@@ -46,7 +46,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:rotate-6 transition-all duration-300">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:rotate-6 transition-all duration-300">
                 <Image
                   src="/cuccung_logo.png" // Đường dẫn tính từ thư mục public
                   alt="Logo Cục Cưng - Cộng đồng Mẹ & Bé uy tín" // ALT text chuẩn SEO
