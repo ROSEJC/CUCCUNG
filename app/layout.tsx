@@ -45,6 +45,14 @@ export const metadata: Metadata = {
     siteName: "Cục Cưng",
     locale: "vi_VN",
     type: "website",
+    images: [
+      {
+        url: "/cuccung_logo",
+        width: 250,
+        height: 100,
+        alt: "Cục Cưng Logo",
+      },
+    ],
   },
 };
 

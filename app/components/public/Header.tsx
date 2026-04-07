@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { Menu, X, ChevronDown, Bell, LogOut, LayoutDashboard, User as UserIcon } from 'lucide-react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 interface Category {
   name: string;
@@ -46,7 +47,14 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
           <div className="flex-shrink-0 flex items-center">
             <Link href="/" className="flex items-center space-x-2 group">
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:rotate-6 transition-all duration-300">
-                <span className="text-white font-black text-2xl tracking-tighter">C</span>
+                <Image
+                  src="/cuccung_logo.png" // Đường dẫn tính từ thư mục public
+                  alt="Logo Cục Cưng - Cộng đồng Mẹ & Bé uy tín" // ALT text chuẩn SEO
+                  width={250} // Chiều rộng thực tế bạn muốn hiển thị (pixel)
+                  height={100} // Chiều cao tương ứng để giữ tỷ lệ
+                  priority // Thuộc tính quan trọng: Ưu tiên load logo ngay lập tức (LCP)
+                  className="object-contain" // Giúp ảnh không bị méo trong khung
+                />
               </div>
               <span className="text-2xl font-black text-slate-900 tracking-tight group-hover:text-primary transition-colors">
                 CucCung<span className="text-secondary ml-0.5">.</span>
