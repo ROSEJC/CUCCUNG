@@ -26,31 +26,31 @@ export default async function AdminLayout({
             <span className="text-xl font-extrabold text-slate-800 tracking-tight">CucCung</span>
           </Link>
         </div>
-        
+
         <nav className="flex-1 px-4 space-y-1.5">
-          <Link 
-            href="/admin" 
+          <Link
+            href="/admin"
             className="flex items-center space-x-3 px-4 py-2.5 hover:bg-emerald-50 hover:text-primary text-slate-600 rounded-xl font-semibold transition-all active:scale-95"
           >
             <LayoutDashboard className="w-5 h-5 opacity-70" />
             <span>Dashboard</span>
           </Link>
-          <Link 
-            href="/admin/posts" 
+          <Link
+            href="/admin/posts"
             className="flex items-center space-x-3 px-4 py-2.5 bg-emerald-50 text-primary rounded-xl font-bold border border-emerald-100 shadow-sm shadow-emerald-500/5 transition-all"
           >
             <FileText className="w-5 h-5" />
             <span>Bài viết</span>
           </Link>
-          <Link 
-            href="/admin/profile" 
+          <Link
+            href="/admin/profile"
             className="flex items-center space-x-3 px-4 py-2.5 text-slate-500 hover:bg-slate-50 hover:text-slate-800 rounded-xl font-semibold transition-all active:scale-95"
           >
             <UserIcon className="w-5 h-5 opacity-70" />
             <span>Hồ sơ</span>
           </Link>
-          <Link 
-            href="/admin/settings" 
+          <Link
+            href="/admin/settings"
             className="flex items-center space-x-3 px-4 py-2.5 text-slate-500 hover:bg-slate-50 hover:text-slate-800 rounded-xl font-semibold transition-all active:scale-95"
           >
             <Settings className="w-5 h-5 opacity-70" />

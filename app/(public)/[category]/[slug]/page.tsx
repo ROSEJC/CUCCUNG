@@ -49,23 +49,35 @@ export async function generateMetadata(
   const { slug, category } = await params;
   const post = await getPost(slug);
 
-  if (!post) return {};
+  if (!post) return { robots: { index: false, follow: false } };
 
   const title = post.metaTitle || post.title;
   const description = post.metaDescription || post.excerpt || undefined;
+  const canonicalUrl = post.canonicalUrl || `https://cuccung.vn/${category}/${slug}`;
 
   return {
     title,
     description,
+    robots: {
+      index: post.isIndexed,
+      follow: true,
+    },
     alternates: {
-      canonical: `https://cuccung.vn/${category}/${slug}`,
+      canonical: canonicalUrl,
     },
     openGraph: {
       title,
       description: description ?? undefined,
       type: 'article',
-      url: `https://cuccung.vn/${category}/${slug}`,
-      images: post.metaImage ? [post.metaImage] : [],
+      url: canonicalUrl,
+      siteName: 'Cục Cưng',
+      locale: 'vi_VN',
+      images: post.metaImage
+        ? [{ url: post.metaImage, alt: post.featuredImageAlt || title }]
+        : [],
+      publishedTime: post.createdAt.toISOString(),
+      modifiedTime: post.updatedAt.toISOString(),
+      authors: post.author?.name ? [post.author.name] : undefined,
     },
   };
 }
@@ -126,19 +138,23 @@ export default async function ArticlePage(
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "BlogPosting",
+            "@type": "Article",
             "headline": post.title,
-            "description": post.metaDescription || post.excerpt,
-            "image": post.metaImage,
+            "description": post.metaDescription || post.excerpt || '',
+            "image": post.metaImage || undefined,
             "author": {
               "@type": "Person",
               "name": post.author.name,
-              "image": post.author.avatar,
-              "description": post.author.bio
+              "image": post.author.avatar || undefined,
+              "description": post.author.bio || undefined
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Cục Cưng",
+              "url": "https://cuccung.vn"
             },
             "datePublished": post.createdAt.toISOString(),
             "dateModified": post.updatedAt.toISOString(),
-            "category": post.category.name,
             "mainEntityOfPage": {
               "@type": "WebPage",
               "@id": `https://cuccung.vn/${post.category.slug}/${post.slug}`
