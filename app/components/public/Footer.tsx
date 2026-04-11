@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
       {/* Subtle Glow effects */}
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-secondary to-primary opacity-50" />
       <div className="absolute -bottom-40 -left-20 w-96 h-96 bg-emerald-500/10 rounded-full blur-[100px]" />
-      
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
           {/* Brand Bio */}
@@ -94,7 +94,7 @@ export const Footer: React.FC = () => {
           <p className="text-slate-500 text-xs font-bold tracking-tight">
             © {new Date().getFullYear()} CucCung.vn
             <span className="mx-2 font-normal opacity-30 text-emerald-500">|</span>
-            Made with <Heart className="w-3 h-3 inline pb-0.5 text-rose-500 fill-rose-500" /> by SEO Masters
+            Là dự án phát triển với mục đích học tập và trải nghiệm người dùng <Heart className="w-3 h-3 inline pb-0.5 text-rose-500 fill-rose-500" />
           </p>
           <div className="flex items-center space-x-6 text-slate-500 text-[10px] font-black uppercase tracking-widest">
             <Link href="#" className="hover:text-primary transition-colors">Sitemap</Link>

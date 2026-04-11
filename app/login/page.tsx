@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react" // 1. Thêm Suspense
 import { signIn, useSession } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { clsx } from "clsx"
@@ -8,7 +8,8 @@ import { Lock, Mail, Baby, ArrowRight, Eye, EyeOff, AlertCircle } from "lucide-r
 import { toast } from "sonner"
 import Link from "next/link"
 
-export default function LoginPage() {
+// Tách phần logic Form ra để bọc Suspense
+function LoginForm() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
@@ -18,7 +19,6 @@ export default function LoginPage() {
   const searchParams = useSearchParams()
   const { data: session } = useSession()
 
-  // 1. Xử lý thông báo lỗi từ URL (ví dụ: bị đá ra từ trang Admin)
   useEffect(() => {
     const error = searchParams.get("error")
     if (error === "AccessDenied") {
@@ -34,7 +34,7 @@ export default function LoginPage() {
       const result = await signIn("credentials", {
         email,
         password,
-        redirect: false, // Quan trọng: không redirect tự động để ta xử lý logic điều hướng
+        redirect: false,
       })
 
       if (result?.error) {
@@ -45,8 +45,6 @@ export default function LoginPage() {
 
       toast.success("Đăng nhập thành công!")
 
-      // 2. Logic Điều hướng thông minh dựa trên Role
-      // Ta fetch lại session mới nhất để lấy Role
       const res = await fetch("/api/auth/session")
       const updatedSession = await res.json()
 
@@ -54,14 +52,12 @@ export default function LoginPage() {
       const callbackUrl = searchParams.get("callbackUrl")
 
       if (callbackUrl) {
-        // Kiểm tra quyền: nếu là trang Admin mà user không phải ADMIN thì về Home
         if (callbackUrl.startsWith("/admin") && userRole !== "ADMIN") {
           router.push("/")
         } else {
           router.push(callbackUrl)
         }
       } else {
-        // Không có callback thì về trang chủ hoặc admin tuỳ role
         router.push(userRole === "ADMIN" ? "/admin" : "/")
       }
 
@@ -79,7 +75,6 @@ export default function LoginPage() {
       <div className="absolute bottom-20 right-10 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse delay-700"></div>
 
       <div className="relative w-full max-w-md z-10">
-        {/* Header Section */}
         <div className="flex flex-col items-center mb-8">
           <div className="p-4 bg-white rounded-3xl shadow-xl mb-4 transition-transform hover:scale-105 duration-300">
             <Baby className="w-12 h-12 text-pink-400" />
@@ -88,10 +83,8 @@ export default function LoginPage() {
           <p className="text-gray-500 mt-2 font-medium">Cộng đồng Mẹ & Bé Cưng</p>
         </div>
 
-        {/* Card Login */}
         <div className="bg-white/70 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-2xl border border-white/50">
           <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Email Input */}
             <div className="space-y-1.5">
               <label className="text-sm font-bold text-gray-700 ml-1">Email của mẹ</label>
               <div className="relative group">
@@ -107,11 +100,10 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Password Input */}
             <div className="space-y-1.5">
               <div className="flex justify-between items-center px-1">
                 <label className="text-sm font-bold text-gray-700">Mật khẩu</label>
-                <Link href="/forgot-password" size="sm" className="text-xs text-pink-500 hover:underline font-semibold">
+                <Link href="/forgot-password" title="Quên mật khẩu" className="text-xs text-pink-500 hover:underline font-semibold">
                   Quên mật khẩu?
                 </Link>
               </div>
@@ -135,7 +127,6 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
               disabled={isLoading}
@@ -157,7 +148,6 @@ export default function LoginPage() {
             </button>
           </form>
 
-          {/* Footer Card */}
           <div className="mt-8 text-center pt-6 border-t border-gray-100">
             <p className="text-gray-500 text-sm">
               Mẹ chưa có tài khoản?{" "}
@@ -168,7 +158,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Support Link */}
         <div className="mt-8 flex items-center justify-center gap-2 text-gray-400 text-xs">
           <AlertCircle className="w-4 h-4" />
           <span>Cần hỗ trợ kỹ thuật?</span>
@@ -176,5 +165,18 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+// Component chính export ra ngoài
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-pink-50">
+        <div className="w-10 h-10 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin"></div>
+      </div>
+    }>
+      <LoginForm />
+    </Suspense>
   )
 }

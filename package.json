@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -48,8 +49,5 @@
   },
   "prisma": {
     "seed": "node prisma/seed.js"
-  },
-  "overrides": {
-    "@auth/core": "0.41.0"
   }
 }

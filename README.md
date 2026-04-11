@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🍼 Cục Cưng - Cộng đồng Mẹ & Bé (Next.js 15)
 
-## Getting Started
+**Cục Cưng** là một nền tảng web hiện đại dành cho cộng đồng Mẹ & Bé, được tối ưu hóa hiệu năng và SEO vượt trội. Dự án tập trung vào việc cung cấp kiến thức chăm sóc trẻ nhỏ và kết nối các bậc phụ huynh.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Công nghệ sử dụng (Tech Stack)
+
+Dự án được xây dựng trên những công nghệ mới nhất năm 2026:
+
+* **Framework:** [Next.js 15](https://nextjs.org/) (App Router, React 19)
+* **Ngôn ngữ:** TypeScript
+* **Database:** [Neon](https://neon.tech/) (Serverless Postgres)
+* **ORM:** [Prisma](https://www.prisma.io/)
+* **Authentication:** [Auth.js v5](https://authjs.dev/) (NextAuth Beta)
+* **Styling:** Tailwind CSS + Lucide Icons
+* **UI Components:** Shadcn/ui & Sonner (Toast notifications)
+* **Deployment:** [Vercel](https://cuccung.vercel.app/)
+
+---
+
+## ✨ Tính năng nổi bật
+
+- [x] **Tối ưu SEO:** Cấu hình Metadata động, chuẩn hóa thẻ `lang="vi"`, tích hợp JSON-LD.
+- [x] **Xác thực người dùng:** Đăng ký/Đăng nhập bảo mật với Role-based access (Admin/User).
+- [x] **Quản lý nội dung:** Hệ thống CRUD bài viết, danh mục mẹ và bé.
+- [x] **Giao diện Responsive:** Tối ưu hiển thị trên mọi thiết bị di động (Mobile-first).
+- [x] **Hiệu suất cao:** Sử dụng Suspense bọc các thành phần động để tăng tốc độ Render.
+
+---
+
+## 🛠 Hướng dẫn cài đặt (Local Development)
+
+1. **Clone dự án:**
+   ```bash
+   git clone [https://github.com/Kuren20052002/CUCCUNG.git](https://github.com/Kuren20052002/CUCCUNG.git)
+   cd cuccung-seo
+   ```
+
+2. **Cài đặt thư viện:**
+   ```bash
+   pnpm install
+   ```
+
+3. **Cấu hình biến môi trường:**
+   Tạo file `.env` tại thư mục gốc và dán các biến sau:
+   ```
+   DATABASE_URL="your_neon_postgres_url"
+   AUTH_SECRET="your_random_secret"
+   ```
+
+4. **Đẩy cấu trúc Database:**
+   ```bash
+   npx prisma db push
+   ```
+
+5. **Chạy dự án:**
+   ```bash
+   pnpm dev
+   ```
+   Truy cập: [http://localhost:3000](http://localhost:3000)
+
+---
+
+## 📈 Chiến lược SEO đã triển khai
+
+Dự án này được thiết kế đặc biệt để đạt điểm cao trong các bài kiểm tra SEO:
+
+- **Cấu trúc URL:** Thân thiện, chứa từ khóa (Slug-based).
+- **Semantic HTML:** Sử dụng đúng các thẻ header, main, footer, article.
+- **Performance:** Đạt chỉ số Core Web Vitals xanh nhờ cơ chế Static Generation của Next.js.
+- **Accessibility:** Hỗ trợ Screen Reader và độ tương phản màu sắc chuẩn.
+
+---
+
+## 📂 Cấu trúc thư mục (Directory Structure)
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+├── app/              # Next.js App Router (Pages, API, Layouts)
+├── actions/          # Server Actions (Xử lý logic phía Server)
+├── components/       # UI Components tái sử dụng
+├── prisma/           # Schema database và file Seed dữ liệu
+├── public/           # Tài nguyên tĩnh (Images, Fonts)
+└── lib/              # Cấu hình chung (Prisma client, Utils)
+```
